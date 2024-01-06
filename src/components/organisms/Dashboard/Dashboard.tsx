@@ -157,7 +157,7 @@ export const Dashboard = () => {
             Actions to Selected Tenant
           </Grid>
         </Grid>
-        <Grid container sx={{ flex: "0 1 85vh"}}>
+        <Grid container sx={{ flex: "0 1 85vh", width: 1}}>
           <TenantGrid />
         </Grid>
         <Grid container sx={{ padding: 0, flex: "0 1 5vh" }}>

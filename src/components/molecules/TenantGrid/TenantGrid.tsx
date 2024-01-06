@@ -1,7 +1,7 @@
+import { Edit, Notifications } from "@mui/icons-material";
+import { Box, Button, Divider, Grid, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Tenant, Tenants, getTenants } from "../../../clients/tenant";
-import { Box, Grid, IconButton, Stack } from "@mui/material";
-import { Edit, Label, Notifications } from "@mui/icons-material";
 
 const TenantItem = ({ tenant }: { tenant: Tenant }) => {
 
@@ -12,34 +12,33 @@ const TenantItem = ({ tenant }: { tenant: Tenant }) => {
   };
 
   return (
-    <Grid container spacing={2} alignItems={"baseline"}>
-      <Grid item xs={7}>
-        <Stack direction={"row"} spacing={2} alignItems={"baseline"}>
-          <h2>{tenant.profiles?.last_name}</h2>
-          <p>{tenant.profiles?.first_name}</p>
-        </Stack>
-      </Grid>
-      <Grid item xs={5}>
-        <Stack direction={"column"} spacing={2} alignItems={"baseline"}>
-          <small>{tenant.addresses?.street_address}</small>
-          <small>{tenant.addresses?.city}, {tenant.addresses?.state_province}</small>
-        </Stack>
-      </Grid>
-      <Grid container spacing={2} alignItems={"baseline"} padding={"10px"}>
-        <Grid item xs={8} textAlign={"start"}>
-          <small>Lease</small>
-          <p>{toDate(tenant.lease_start_date ?? "")} - {toDate(tenant.lease_end_date ?? "")}</p>
+    <Box sx={{width: 1}}>
+      <Grid container spacing={2} alignItems={"baseline"} maxWidth={1}>
+        <Grid item xs={7} textAlign={"start"}>
+          <small>Name</small>
+          <Stack direction={"row"} spacing={2} alignItems={"baseline"}>
+            <h2>{tenant.profiles?.last_name}</h2>
+            <p>{tenant.profiles?.first_name}</p>
+          </Stack>
         </Grid>
-        <Grid item xs={4}>
-          <IconButton>
-            <Edit />
-          </IconButton>
-          <IconButton>
-            <Notifications />
-          </IconButton>
+        <Grid item xs={5} textAlign={"start"}>
+          <small>Address</small>
+          <Stack direction={"column"} spacing={2} alignItems={"baseline"}>
+            <p>{tenant.addresses?.street_address}, {tenant.addresses?.city}, {tenant.addresses?.state_province}</p>
+          </Stack>
+        </Grid>
+        <Grid container item spacing={2} alignItems={"baseline"} padding={"10px"}>
+          <Grid item xs={8} textAlign={"start"}>
+            <small>Lease</small>
+            <p>{toDate(tenant.lease_start_date ?? "")} - {toDate(tenant.lease_end_date ?? "")}</p>
+          </Grid>
+          <Grid item xs={4} spacing={2}>
+            <Button sx={{marginLeft: "10px"}} variant={"contained"} endIcon={<Edit />}>Edit Tenant</Button>
+            <Button sx={{marginLeft: "10px"}} variant={"contained"} endIcon={<Notifications/>}>Send Notification</Button>
+          </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </Box>
   );
 }
 
@@ -54,12 +53,13 @@ export const TenantGrid = () => {
   }, []);
 
   return (
-    <Stack sx={{padding: "10px", maxHeight: "50px" }}>
+    <Stack sx={{ margin: 0, width: 1, height: "auto" }}>
       {
         tenants.map((tenant) => {
           return <TenantItem key={tenant.tenant_id} tenant={tenant} />
         })
       }
+      <Divider orientation="horizontal" />
     </Stack>
   );
 };
