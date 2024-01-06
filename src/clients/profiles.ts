@@ -36,12 +36,12 @@ export const checkForUserProfile = async (id?: string) => {
 
 export const createProfile = async (profile: Profile) => {
   const { data, error } = await supabase
-    .from("profile")
+    .from("profiles")
     .insert({
       first_name: profile.firstName,
       middle_name: profile.middleName,
       last_name: profile.lastName,
-      birth_date: profile.birthDate,
+      birth_date: profile.birthDate.toISOString(),
       auth_id: profile.authId,
     })
     .single();
