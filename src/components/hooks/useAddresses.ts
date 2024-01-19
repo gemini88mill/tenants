@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-type AddressInput = {
+export type AddressInput = {
   streetAddress: string;
   streetAddress2: string;
   city: string;

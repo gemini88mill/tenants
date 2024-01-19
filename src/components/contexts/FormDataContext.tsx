@@ -1,14 +1,22 @@
 import { createContext, useCallback, useContext } from "react";
 import { PersonalInput, usePersonal } from "../hooks/usePersonal";
 import { addTenant } from "../../clients/tenant";
-import { useAddresses } from "../hooks/useAddresses";
+import { AddressInput, useAddresses } from "../hooks/useAddresses";
 
 type FormDataContextType = {
   personal: {
     updatePersonal: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key:string) => void;
     getPersonal: () => PersonalInput;
     clearPersonal: () => void;
-  }
+  },
+  address: {
+    addAddress: () => void;
+    updateAddress: () => void;
+    removeAddress: () => void;
+    clearAddresses: () => void;
+    getAddresses: () => AddressInput[];
+    getAddress: () => AddressInput;
+  },
   saveDataContext: () => void;
 };
 
@@ -20,8 +28,14 @@ const FormDataContext = createContext<FormDataContextType | undefined>(undefined
 FormDataContext.displayName = "FormDataContext";
 
 export const FormDataContextProvider = ({children}: FormDataContextProviderProps) => {
-  const {personal, clearPersonal, getPersonal, updatePersonal} = usePersonal();
+  const { personal, clearPersonal, getPersonal, updatePersonal} = usePersonal();
   const { addAddress, updateAddress, removeAddress, clearAddresses, getAddresses, getAddress } = useAddresses();
+
+  /**
+   * todo: add address function to saveDataContext
+   * todo: give address functions to Provider return
+   * todo: 
+   */
 
   const saveDataContext = useCallback(() => {
     addTenant({
@@ -34,6 +48,14 @@ export const FormDataContextProvider = ({children}: FormDataContextProviderProps
       updatePersonal,
       getPersonal,
       clearPersonal,
+    },
+    address: {
+      addAddress,
+      updateAddress,
+      removeAddress,
+      clearAddresses,
+      getAddresses,
+      getAddress
     },
     saveDataContext
   };

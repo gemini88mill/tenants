@@ -1,14 +1,10 @@
 import { Grid, MenuItem, Select, TextField } from "@mui/material";
 import { useTenantProvider } from "../../Providers/Tenants/TenantProvider";
+import { useFormDataContextProvider } from "../../contexts/FormDataContext";
 
 export const AddressInput = () => {
-  const {
-    state: {
-      tenant: { address },
-    },
-    dispatch,
-    constants: { addressTypes },
-  } = useTenantProvider();
+  const {address: {getAddresses, removeAddress, updateAddress}} = useFormDataContextProvider();
+  const address = getAddresses();
 
 
   return (
