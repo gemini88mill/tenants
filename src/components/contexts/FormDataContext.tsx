@@ -1,8 +1,11 @@
-import { createContext, useCallback, useContext, useState } from "react";
+import { createContext, useCallback, useContext } from "react";
+import { usePersonal } from "../hooks/usePersonal";
 
 type FormDataContextType = {
   updatePersonal: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key:string) => void;
   getPersonal: () => PersonalInput;
+  saveDataContext: () => void;
+  clearPersonal: () => void;
 };
 
 type FormDataContextProviderProps = {
@@ -22,26 +25,18 @@ const FormDataContext = createContext<FormDataContextType | undefined>(undefined
 FormDataContext.displayName = "FormDataContext";
 
 export const FormDataContextProvider = ({children}: FormDataContextProviderProps) => {
-  const [personal, setPersonal] = useState<PersonalInput>({
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    birthDate: "",
-    email: "",
-    phone: "",
-  });
+  const {personal, clearPersonal, getPersonal, updatePersonal} = usePersonal();
 
-  const updatePersonal = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key:string) => {
-    setPersonal((prev) => ({...prev, [key]: e.target.value}));
-  }, []);
-
-  const getPersonal = useCallback(() => {
-    return personal;
+  const saveDataContext = useCallback(() => {
+    // Save data to the database
+    console.log(personal);
   }, [personal]);
 
   const value = {
     updatePersonal: updatePersonal,
     getPersonal: getPersonal,
+    saveDataContext: saveDataContext,
+    clearPersonal: clearPersonal,
   };
 
   return (

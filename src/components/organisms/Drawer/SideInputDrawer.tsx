@@ -1,5 +1,6 @@
 import { Box, Button, ButtonGroup, Drawer } from "@mui/material";
 import { useFormContextProvider } from "../../contexts/FormContext";
+import { useFormDataContextProvider } from "../../contexts/FormDataContext";
 
 type SideInputDrawerProps = {
   open: boolean;
@@ -12,6 +13,7 @@ type SideInputDrawerProps = {
  */
 export const SideInputDrawer = ({ open, setOpen }: SideInputDrawerProps) => {
   const { inputGroups } = useFormContextProvider();
+  const {saveDataContext} = useFormDataContextProvider();
 
   return (
     <Drawer
@@ -30,7 +32,7 @@ export const SideInputDrawer = ({ open, setOpen }: SideInputDrawerProps) => {
           variant="contained"
           aria-label="outlined primary button group"
         >
-          <Button>Submit</Button>
+          <Button onClick={saveDataContext}>Submit</Button>
           <Button>Clear</Button>
         </ButtonGroup>
       </Box>
