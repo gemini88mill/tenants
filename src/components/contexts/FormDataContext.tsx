@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useState } from "react";
 
 type FormDataContextType = {
-  updatePersonal: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  updatePersonal: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key:string) => void;
   getPersonal: () => PersonalInput;
 };
 
@@ -18,9 +18,7 @@ type PersonalInput = {
   phone: string;
 };
 
-const FormDataContext = createContext<FormDataContextType>({
-  updatePersonal: () => {},
-});
+const FormDataContext = createContext<FormDataContextType | undefined>(undefined);
 FormDataContext.displayName = "FormDataContext";
 
 export const FormDataContextProvider = ({children}: FormDataContextProviderProps) => {
@@ -33,8 +31,8 @@ export const FormDataContextProvider = ({children}: FormDataContextProviderProps
     phone: "",
   });
 
-  const updatePersonal = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setPersonal((prev) => ({...prev, [e.target.name]: e.target.value}));
+  const updatePersonal = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key:string) => {
+    setPersonal((prev) => ({...prev, [key]: e.target.value}));
   }, []);
 
   const getPersonal = useCallback(() => {

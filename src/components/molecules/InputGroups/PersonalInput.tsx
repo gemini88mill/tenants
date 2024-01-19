@@ -16,6 +16,7 @@ export const PersonalInput = () => {
             variant="outlined"
             required
             autoComplete="off"
+            onChange={(e) => updatePersonal(e, e.target.name)}
           />
         </Grid>
         <Grid item md={2}>
@@ -25,6 +26,7 @@ export const PersonalInput = () => {
             variant="outlined"
             name="middleName"
             autoComplete="off"
+            onChange={(e) => updatePersonal(e, e.target.name)}
           />
         </Grid>
         <Grid item md={5}>
@@ -35,6 +37,7 @@ export const PersonalInput = () => {
             variant="outlined"
             required
             autoComplete="off"
+            onChange={(e) => updatePersonal(e, e.target.name)}
           />
         </Grid>
         <Grid item md={4}>
@@ -44,6 +47,7 @@ export const PersonalInput = () => {
             variant="outlined"
             name="email"
             autoComplete="off"
+            onChange={(e) => updatePersonal(e, e.target.name)}
           />
         </Grid>
         <Grid item md={4}>
@@ -54,6 +58,7 @@ export const PersonalInput = () => {
             variant="outlined"
             type="date"
             autoComplete="off"
+            onChange={(e) => updatePersonal(e, e.target.name)}
           />
         </Grid>
         <Grid item md={4}>
@@ -63,6 +68,7 @@ export const PersonalInput = () => {
             variant="outlined"
             name="phone"
             autoComplete="off"
+            onChange={(e) => updatePersonal(e, e.target.name)}
           />
         </Grid>
       </Grid>
