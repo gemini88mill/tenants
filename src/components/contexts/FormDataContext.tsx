@@ -1,24 +1,18 @@
 import { createContext, useCallback, useContext } from "react";
-import { usePersonal } from "../hooks/usePersonal";
+import { PersonalInput, usePersonal } from "../hooks/usePersonal";
+import { addTenant } from "../../clients/tenant";
 
 type FormDataContextType = {
-  updatePersonal: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key:string) => void;
-  getPersonal: () => PersonalInput;
+  personal: {
+    updatePersonal: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key:string) => void;
+    getPersonal: () => PersonalInput;
+    clearPersonal: () => void;
+  }
   saveDataContext: () => void;
-  clearPersonal: () => void;
 };
 
 type FormDataContextProviderProps = {
   children: React.ReactNode;
-};
-
-type PersonalInput = {
-  firstName: string;
-  middleName: string;
-  lastName: string;
-  birthDate: string;
-  email: string;
-  phone: string;
 };
 
 const FormDataContext = createContext<FormDataContextType | undefined>(undefined);
@@ -28,15 +22,18 @@ export const FormDataContextProvider = ({children}: FormDataContextProviderProps
   const {personal, clearPersonal, getPersonal, updatePersonal} = usePersonal();
 
   const saveDataContext = useCallback(() => {
-    // Save data to the database
-    console.log(personal);
+    addTenant({
+      ...personal
+    });
   }, [personal]);
 
   const value = {
-    updatePersonal: updatePersonal,
-    getPersonal: getPersonal,
-    saveDataContext: saveDataContext,
-    clearPersonal: clearPersonal,
+    personal: {
+      updatePersonal,
+      getPersonal,
+      clearPersonal,
+    },
+    saveDataContext
   };
 
   return (

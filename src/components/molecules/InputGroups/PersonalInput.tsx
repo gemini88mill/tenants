@@ -2,7 +2,7 @@ import { Box, Grid, TextField } from "@mui/material";
 import { useFormDataContextProvider } from "../../contexts/FormDataContext";
 
 export const PersonalInput = () => {
-  const {updatePersonal, getPersonal} = useFormDataContextProvider();
+  const {personal: {updatePersonal}} = useFormDataContextProvider();
 
   return (
     <Box sx={{ width: 1 }}>
