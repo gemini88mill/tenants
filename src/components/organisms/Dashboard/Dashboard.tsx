@@ -20,14 +20,13 @@ import {
   ListItemText,
   Stack,
   SvgIconTypeMap,
-  TextField,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import React, { useEffect, useState } from "react";
-import { TenantProvider } from "../../Providers/Tenants/TenantProvider";
-import { TenantDrawerInput } from "../../molecules/InputGroups/TenantDrawerInput";
-import { Tenant, getTenants } from "../../../clients/tenant";
+import React, { useState } from "react";
+import { FormAction, FormConfiguration, FormType } from "../../../../types/formConfiguration.types";
+import { FormContextProvider } from "../../contexts/FormContext";
 import { TenantGrid } from "../../molecules/TenantGrid/TenantGrid";
+import { SideInputDrawer } from "../Drawer/SideInputDrawer";
 
 export enum MenuItems {
   Tenants = "Tenants",
@@ -61,22 +60,15 @@ const MenuItem = ({ text, Icon, setSelected }: MenuItemProps) => {
 export const Dashboard = () => {
   const [selected, setSelected] = useState<MenuItems>(MenuItems.Tenants);
   const [open, setOpen] = useState(false);
+  const [inputConfig, setInputConfig] = useState<FormConfiguration>();
 
-  const setProviderOnSelected = (text: MenuItems) => {
-    switch (text) {
-      case MenuItems.Tenants:
-        return TenantProvider;
-      case MenuItems.Owners:
-        break;
-      case MenuItems.Properties:
-        break;
-      case MenuItems.Schedule:
-        break;
-      case MenuItems.Maps:
-        break;
-      default:
-        break;
-    }
+  const createNewTenant = () => {
+    setOpen(true);
+    const inputConfig:FormConfiguration = {
+      formAction: FormAction.Add,
+      formType: FormType.Tenant,
+    };
+    setInputConfig(inputConfig);
   };
 
   return (
@@ -144,7 +136,7 @@ export const Dashboard = () => {
               </IconButton>
               <IconButton
                 aria-label="Add New Tenant"
-                onClick={() => setOpen(true)}
+                onClick={() => createNewTenant()}
               >
                 <PersonAdd color="info" />
               </IconButton>
@@ -157,24 +149,16 @@ export const Dashboard = () => {
             Actions to Selected Tenant
           </Grid>
         </Grid>
-        <Grid container sx={{ flex: "0 1 85vh", width: 1}}>
+        <Grid container sx={{ flex: "0 1 85vh", width: 1 }}>
           <TenantGrid />
         </Grid>
         <Grid container sx={{ padding: 0, flex: "0 1 5vh" }}>
           Content Footer
         </Grid>
       </Grid>
-      <Drawer
-        PaperProps={{ sx: { width: "50%" } }}
-        anchor="right"
-        open={open}
-        onClose={() => setOpen(false)}
-      >
-        {selected === MenuItems.Tenants 
-          ? <TenantDrawerInput />
-          : null
-         }
-      </Drawer>
+      <FormContextProvider inputConfig={inputConfig}>
+        <SideInputDrawer open={open} setOpen={setOpen} />
+      </FormContextProvider>
     </Box>
   );
 };

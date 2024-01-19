@@ -32,7 +32,7 @@ const TenantItem = ({ tenant }: { tenant: Tenant }) => {
             <small>Lease</small>
             <p>{toDate(tenant.lease_start_date ?? "")} - {toDate(tenant.lease_end_date ?? "")}</p>
           </Grid>
-          <Grid item xs={4} spacing={2}>
+          <Grid item xs={4}>
             <Button sx={{marginLeft: "10px"}} variant={"contained"} endIcon={<Edit />}>Edit Tenant</Button>
             <Button sx={{marginLeft: "10px"}} variant={"contained"} endIcon={<Notifications/>}>Send Notification</Button>
           </Grid>
