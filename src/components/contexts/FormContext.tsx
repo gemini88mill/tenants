@@ -2,6 +2,7 @@ import { createContext, useContext, useMemo } from "react";
 import { FormConfiguration, FormType } from "../../../types/formConfiguration.types";
 import { PersonalInput } from "../molecules/InputGroups/PersonalInput";
 import { FormDataContextProvider } from "./FormDataContext";
+import { AddressInput } from "../molecules/InputGroups/AddressInput";
 
 type FormContextProviderProps = {
   children: React.ReactNode;
@@ -19,6 +20,7 @@ const getInputGroups = (formType?: FormType) => {
     case FormType.Tenant:
       return [
         PersonalInput,
+        AddressInput
       ];
     case FormType.Owner:
       return [];

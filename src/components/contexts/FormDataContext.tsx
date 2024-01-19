@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext } from "react";
 import { PersonalInput, usePersonal } from "../hooks/usePersonal";
 import { addTenant } from "../../clients/tenant";
+import { useAddresses } from "../hooks/useAddresses";
 
 type FormDataContextType = {
   personal: {
@@ -20,6 +21,7 @@ FormDataContext.displayName = "FormDataContext";
 
 export const FormDataContextProvider = ({children}: FormDataContextProviderProps) => {
   const {personal, clearPersonal, getPersonal, updatePersonal} = usePersonal();
+  const { addAddress, updateAddress, removeAddress, clearAddresses, getAddresses, getAddress } = useAddresses();
 
   const saveDataContext = useCallback(() => {
     addTenant({
