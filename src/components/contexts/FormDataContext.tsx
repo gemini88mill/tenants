@@ -1,23 +1,30 @@
-import { createContext, useCallback, useContext } from "react";
+import { createContext, useCallback, useContext, useMemo } from "react";
 import { PersonalInput, usePersonal } from "../hooks/usePersonal";
 import { addTenant } from "../../clients/tenant";
 import { AddressInput, useAddresses } from "../hooks/useAddresses";
 
 type FormDataContextType = {
   personal: {
-    updatePersonal: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key:string) => void;
+    updatePersonal: (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      key: string
+    ) => void;
     getPersonal: () => PersonalInput;
     clearPersonal: () => void;
-  },
+  };
   address: {
     addAddress: () => void;
-    updateAddress: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key:string, index:number) => void;
+    updateAddress: (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      key: string,
+      index: number
+    ) => void;
     removeAddress: (index: number) => void;
     clearAddresses: () => void;
     getAddresses: () => AddressInput[];
     getAddress: (index: number) => AddressInput;
-    addressTypes: Array<{id: number; address_type: string;}>;
-  },
+    addressTypes: Array<{ id: number; address_type: string }>;
+  };
   saveDataContext: () => void;
 };
 
@@ -25,42 +32,70 @@ type FormDataContextProviderProps = {
   children: React.ReactNode;
 };
 
-const FormDataContext = createContext<FormDataContextType | undefined>(undefined);
+const FormDataContext = createContext<FormDataContextType | undefined>(
+  undefined
+);
 FormDataContext.displayName = "FormDataContext";
 
-export const FormDataContextProvider = ({children}: FormDataContextProviderProps) => {
-  const { personal, clearPersonal, getPersonal, updatePersonal} = usePersonal();
-  const { addAddress, updateAddress, removeAddress, clearAddresses, getAddresses, getAddress, addressTypes } = useAddresses();
+export const FormDataContextProvider = ({
+  children,
+}: FormDataContextProviderProps) => {
+  const { personal, clearPersonal, getPersonal, updatePersonal } =
+    usePersonal();
+  const {
+    addAddress,
+    updateAddress,
+    removeAddress,
+    clearAddresses,
+    getAddresses,
+    getAddress,
+    addressTypes,
+  } = useAddresses();
 
   /**
    * todo: add address function to saveDataContext
    * todo: give address functions to Provider return
-   * todo: 
+   * todo:
    */
 
   const saveDataContext = useCallback(() => {
     addTenant({
-      ...personal
+      ...personal,
     });
   }, [personal]);
 
-  const value = {
-    personal: {
-      updatePersonal,
-      getPersonal,
-      clearPersonal,
-    },
-    address: {
+  const value = useMemo(
+    () => ({
+      personal: {
+        updatePersonal,
+        getPersonal,
+        clearPersonal,
+      },
+      address: {
+        addAddress,
+        updateAddress,
+        removeAddress,
+        clearAddresses,
+        getAddresses,
+        getAddress,
+        addressTypes,
+      },
+      saveDataContext,
+    }),
+    [
       addAddress,
-      updateAddress,
-      removeAddress,
+      addressTypes,
       clearAddresses,
-      getAddresses,
+      clearPersonal,
       getAddress,
-      addressTypes
-    },
-    saveDataContext
-  };
+      getAddresses,
+      getPersonal,
+      removeAddress,
+      saveDataContext,
+      updateAddress,
+      updatePersonal,
+    ]
+  );
 
   return (
     <FormDataContext.Provider value={value}>

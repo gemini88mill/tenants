@@ -1,15 +1,16 @@
-import { Grid, MenuItem, Select, TextField } from "@mui/material";
+import { Box, Button, Grid, MenuItem, Select, TextField } from "@mui/material";
 import { useFormDataContextProvider } from "../../contexts/FormDataContext";
 
 export const AddressInput = () => {
-  const {address: {getAddresses, removeAddress, updateAddress, addressTypes}} = useFormDataContextProvider();
+  const {address: {getAddresses, addressTypes, addAddress}} = useFormDataContextProvider();
   const address = getAddresses();
 
 
   return (
-    <>
+    <Box sx={{width: 1}}>
+      <h4>Address</h4>
       {address.map((address, index) => (
-        <Grid key={`address-${index}`} container spacing={2}>
+        <Grid key={`address-${index}`} container spacing={2} marginTop={1}>
           <Grid item md={4}>
             <Select value={""} fullWidth>
               {addressTypes?.map((addressType) => (
@@ -60,7 +61,8 @@ export const AddressInput = () => {
           </Grid>
         </Grid>
       ))}
-    </>
+      <Button variant="contained" onClick={addAddress}>Add</Button>
+    </Box>
   );
 
   // return (
