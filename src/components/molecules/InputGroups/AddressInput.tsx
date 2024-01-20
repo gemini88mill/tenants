@@ -1,9 +1,8 @@
 import { Grid, MenuItem, Select, TextField } from "@mui/material";
-import { useTenantProvider } from "../../Providers/Tenants/TenantProvider";
 import { useFormDataContextProvider } from "../../contexts/FormDataContext";
 
 export const AddressInput = () => {
-  const {address: {getAddresses, removeAddress, updateAddress}} = useFormDataContextProvider();
+  const {address: {getAddresses, removeAddress, updateAddress, addressTypes}} = useFormDataContextProvider();
   const address = getAddresses();
 
 
@@ -26,13 +25,13 @@ export const AddressInput = () => {
               label={"Street"}
               name="street"
               variant="outlined"
-              value={address.street}
-              onChange={(e) =>
-                dispatch({
-                  type: "updateAddress",
-                  payload: [{ [e.target.name]: e.target.value }],
-                })
-              }
+              // value={address.street}
+              // onChange={(e) =>
+              //   dispatch({
+              //     type: "updateAddress",
+              //     payload: [{ [e.target.name]: e.target.value }],
+              //   })
+              // }
             />
           </Grid>
           <Grid item md={6}>
@@ -48,7 +47,7 @@ export const AddressInput = () => {
               fullWidth
               label={"State"}
               variant="outlined"
-              value={address.state}
+              // value={address.state}
             />
           </Grid>
           <Grid item md={4}>
@@ -56,7 +55,7 @@ export const AddressInput = () => {
               fullWidth
               label={"Zip"}
               variant="outlined"
-              value={address.zip}
+              // value={address.zip}
             />
           </Grid>
         </Grid>

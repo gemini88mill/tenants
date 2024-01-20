@@ -11,11 +11,12 @@ type FormDataContextType = {
   },
   address: {
     addAddress: () => void;
-    updateAddress: () => void;
-    removeAddress: () => void;
+    updateAddress: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key:string, index:number) => void;
+    removeAddress: (index: number) => void;
     clearAddresses: () => void;
     getAddresses: () => AddressInput[];
-    getAddress: () => AddressInput;
+    getAddress: (index: number) => AddressInput;
+    addressTypes: Array<{id: number; address_type: string;}>;
   },
   saveDataContext: () => void;
 };
@@ -29,7 +30,7 @@ FormDataContext.displayName = "FormDataContext";
 
 export const FormDataContextProvider = ({children}: FormDataContextProviderProps) => {
   const { personal, clearPersonal, getPersonal, updatePersonal} = usePersonal();
-  const { addAddress, updateAddress, removeAddress, clearAddresses, getAddresses, getAddress } = useAddresses();
+  const { addAddress, updateAddress, removeAddress, clearAddresses, getAddresses, getAddress, addressTypes } = useAddresses();
 
   /**
    * todo: add address function to saveDataContext
@@ -55,7 +56,8 @@ export const FormDataContextProvider = ({children}: FormDataContextProviderProps
       removeAddress,
       clearAddresses,
       getAddresses,
-      getAddress
+      getAddress,
+      addressTypes
     },
     saveDataContext
   };
