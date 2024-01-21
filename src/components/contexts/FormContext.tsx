@@ -3,6 +3,7 @@ import { FormConfiguration, FormType } from "../../../types/formConfiguration.ty
 import { PersonalInput } from "../molecules/InputGroups/PersonalInput";
 import { FormDataContextProvider } from "./FormDataContext";
 import { AddressInput } from "../molecules/InputGroups/AddressInput";
+import { Tenant } from "../../clients/tenant";
 
 type FormContextProviderProps = {
   children: React.ReactNode;
@@ -60,7 +61,7 @@ export const FormContextProvider = ({children, inputConfig}:FormContextProviderP
 
   return (
     <FormContext.Provider value={value}>
-      <FormDataContextProvider>
+      <FormDataContextProvider<FormType>>
         {children}
       </FormDataContextProvider>  
     </FormContext.Provider>

@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useMemo } from "react";
 import { PersonalInput, usePersonal } from "../hooks/usePersonal";
 import { addTenant } from "../../clients/tenant";
 import { AddressInput, useAddresses } from "../hooks/useAddresses";
+import { FormType } from "../../../types/formConfiguration.types";
 
 type FormDataContextType = {
   personal: {
@@ -37,7 +38,15 @@ const FormDataContext = createContext<FormDataContextType | undefined>(
 );
 FormDataContext.displayName = "FormDataContext";
 
-export const FormDataContextProvider = ({
+//todo: make FormDataContextProvider generic
+//todo: the generic will be the type of the data that will be saved using the hooks given in the context
+
+/**
+ * Notes: T should denote the type of data that the context will be saving. For example if T is a tenant type, then the
+ * form data context should be able to have all the functions to save a tenant.
+ */
+
+export const FormDataContextProvider = <T, >({
   children,
 }: FormDataContextProviderProps) => {
   const { personal, clearPersonal, getPersonal, updatePersonal } =
@@ -52,11 +61,7 @@ export const FormDataContextProvider = ({
     addressTypes,
   } = useAddresses();
 
-  /**
-   * todo: add address function to saveDataContext
-   * todo: give address functions to Provider return
-   * todo:
-   */
+  
 
   const saveDataContext = useCallback(() => {
     addTenant({
