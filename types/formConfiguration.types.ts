@@ -1,3 +1,6 @@
+import { useAddresses } from "../src/components/hooks/useAddresses";
+import { usePersonal } from "../src/components/hooks/usePersonal";
+
 export enum FormType {
   Tenant = 'tenant',
   Owner = 'owner',
@@ -20,5 +23,12 @@ export interface FormConfiguration {
 
 export interface TenantFormConfiguration extends FormConfiguration {
   inputGroups: string[];
-  
+}
+
+export interface FormDataType {
+  address: typeof useAddresses;
+}
+
+export interface TenantDataType extends FormDataType {
+  personal: typeof usePersonal;
 }
