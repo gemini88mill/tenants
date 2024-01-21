@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useMemo } from "react";
 import { addTenant } from "../../clients/tenant";
 import { AddressInput, useAddresses } from "../hooks/useAddresses";
 import { PersonalInput, usePersonal } from "../hooks/usePersonal";
+import { FormAction, FormType } from "../../../types/formConfiguration.types";
 
 type FormDataContextType = {
   personal: {
@@ -30,6 +31,8 @@ type FormDataContextType = {
 
 type FormDataContextProviderProps = {
   children: React.ReactNode;
+  action?: FormAction;
+  type?: FormType;
 };
 
 const FormDataContext = createContext<FormDataContextType | undefined>(
@@ -47,6 +50,8 @@ FormDataContext.displayName = "FormDataContext";
 
 export const FormDataContextProvider = ({
   children,
+  action,
+  type
 }: FormDataContextProviderProps) => {
   const { personal, clearPersonal, getPersonal, updatePersonal } = 
     usePersonal();
@@ -59,8 +64,6 @@ export const FormDataContextProvider = ({
     getAddress,
     addressTypes,
   } = useAddresses();
-
-  
 
   const saveDataContext = useCallback(() => {
     addTenant({

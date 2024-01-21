@@ -30,5 +30,6 @@ export interface FormDataType {
 }
 
 export interface TenantDataType extends FormDataType {
+  type: FormType.Tenant;
   personal: typeof usePersonal;
 }

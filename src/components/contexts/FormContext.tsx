@@ -1,11 +1,8 @@
 import { createContext, useContext, useMemo } from "react";
-import { FormConfiguration, FormDataType, FormType, TenantDataType } from "../../../types/formConfiguration.types";
+import { FormConfiguration, FormType } from "../../../types/formConfiguration.types";
+import { AddressInput } from "../molecules/InputGroups/AddressInput";
 import { PersonalInput } from "../molecules/InputGroups/PersonalInput";
 import { FormDataContextProvider } from "./FormDataContext";
-import { AddressInput } from "../molecules/InputGroups/AddressInput";
-import { Tenant } from "../../clients/tenant";
-import { usePersonal } from "../hooks/usePersonal";
-import { useAddresses } from "../hooks/useAddresses";
 
 type FormContextProviderProps = {
   children: React.ReactNode;
@@ -63,7 +60,7 @@ export const FormContextProvider = ({children, inputConfig}:FormContextProviderP
 
   return (
     <FormContext.Provider value={value}>
-      <FormDataContextProvider>
+      <FormDataContextProvider action={inputConfig?.formAction} type={inputConfig?.formType}>
         {children}
       </FormDataContextProvider>  
     </FormContext.Provider>
