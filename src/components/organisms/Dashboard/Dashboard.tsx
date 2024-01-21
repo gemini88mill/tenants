@@ -1,30 +1,18 @@
 import {
-  CalendarToday,
   Email,
-  Home,
-  Map,
   NotificationAdd,
-  People,
-  Person,
-  PersonAdd,
+  PersonAdd
 } from "@mui/icons-material";
 import {
   Box,
-  Drawer,
   Grid,
   IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Stack,
-  SvgIconTypeMap,
+  Stack
 } from "@mui/material";
-import { OverridableComponent } from "@mui/material/OverridableComponent";
-import React, { useState } from "react";
+import { useState } from "react";
 import { FormAction, FormConfiguration, FormType } from "../../../../types/formConfiguration.types";
 import { FormContextProvider } from "../../contexts/FormContext";
+import { NavMenu } from "../../molecules/NavMenu";
 import { TenantGrid } from "../../molecules/TenantGrid/TenantGrid";
 import { SideInputDrawer } from "../Drawer/SideInputDrawer";
 
@@ -36,29 +24,8 @@ export enum MenuItems {
   Maps = "Maps",
 }
 
-type MenuItemProps = {
-  text: MenuItems;
-  Icon: OverridableComponent<SvgIconTypeMap<unknown, "svg">> & {
-    muiName: string;
-  };
-  setSelected: React.Dispatch<React.SetStateAction<MenuItems>>;
-};
-
-const MenuItem = ({ text, Icon, setSelected }: MenuItemProps) => {
-  return (
-    <ListItem>
-      <ListItemButton onClick={() => setSelected(text)}>
-        <ListItemIcon>
-          <Icon />
-        </ListItemIcon>
-        <ListItemText primary={text} />
-      </ListItemButton>
-    </ListItem>
-  );
-};
-
 export const Dashboard = () => {
-  const [selected, setSelected] = useState<MenuItems>(MenuItems.Tenants);
+  const [selected, setSelected] = useState<FormType>(FormType.Tenant);
   const [open, setOpen] = useState(false);
   const [inputConfig, setInputConfig] = useState<FormConfiguration>();
 
@@ -71,42 +38,18 @@ export const Dashboard = () => {
     setInputConfig(inputConfig);
   };
 
+  const onNavClick = (item: FormType) => {
+    const inputConfig:FormConfiguration = {
+      formAction: FormAction.Add,
+      formType: item,
+    };
+    setInputConfig(inputConfig);
+    setSelected(item);
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
-      <Drawer
-        variant="permanent"
-        anchor="left"
-        sx={{ width: 240 }}
-        PaperProps={{ sx: { width: 240 } }}
-      >
-        <List>
-          <MenuItem
-            text={MenuItems.Tenants}
-            Icon={Person}
-            setSelected={setSelected}
-          />
-          <MenuItem
-            text={MenuItems.Owners}
-            Icon={People}
-            setSelected={setSelected}
-          />
-          <MenuItem
-            text={MenuItems.Properties}
-            Icon={Home}
-            setSelected={setSelected}
-          />
-          <MenuItem
-            text={MenuItems.Schedule}
-            Icon={CalendarToday}
-            setSelected={setSelected}
-          />
-          <MenuItem
-            text={MenuItems.Maps}
-            Icon={Map}
-            setSelected={setSelected}
-          />
-        </List>
-      </Drawer>
+      <NavMenu selected={selected} onNavClick={onNavClick}/>
       <Grid
         container
         direction={"column"}
