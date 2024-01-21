@@ -26,10 +26,11 @@ export interface TenantFormConfiguration extends FormConfiguration {
 }
 
 export interface FormDataType {
-  address: typeof useAddresses;
+  type: FormType;
+  action: FormAction;
 }
 
 export interface TenantDataType extends FormDataType {
-  type: FormType.Tenant;
   personal: typeof usePersonal;
+  address: typeof useAddresses;
 }

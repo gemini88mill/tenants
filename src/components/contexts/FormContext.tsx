@@ -1,5 +1,11 @@
 import { createContext, useContext, useMemo } from "react";
-import { FormConfiguration, FormType } from "../../../types/formConfiguration.types";
+import {
+  FormAction,
+  FormConfiguration,
+  FormDataType,
+  FormType,
+  TenantDataType,
+} from "../../../types/formConfiguration.types";
 import { AddressInput } from "../molecules/InputGroups/AddressInput";
 import { PersonalInput } from "../molecules/InputGroups/PersonalInput";
 import { FormDataContextProvider } from "./FormDataContext";
@@ -18,10 +24,7 @@ type FormContextValue = {
 const getInputGroups = (formType?: FormType) => {
   switch (formType) {
     case FormType.Tenant:
-      return [
-        PersonalInput,
-        AddressInput
-      ];
+      return [PersonalInput, AddressInput];
     case FormType.Owner:
       return [];
     case FormType.Property:
@@ -33,39 +36,47 @@ const getInputGroups = (formType?: FormType) => {
     default:
       return [];
   }
-}
+};
 
 /**
  * FormContext, context for the form that will be generated in the SideInputDrawer.
  */
-export const FormContext = createContext<FormContextValue | undefined>(undefined);
+export const FormContext = createContext<FormContextValue | undefined>(
+  undefined
+);
 FormContext.displayName = "FormContext";
 
 /**
  * FormContextProvider, provider for the FormContext.
  */
-export const FormContextProvider = ({children, inputConfig}:FormContextProviderProps) => {
-
-  const {formAction, formType} = inputConfig ?? {};
+export const FormContextProvider = ({
+  children,
+  inputConfig,
+}: FormContextProviderProps) => {
+  const { formAction, formType } = inputConfig ?? {};
   const inputGroups = useMemo(() => getInputGroups(formType), [formType]);
 
   const value = useMemo(() => {
     return {
       inputGroups,
       formAction,
-      formType
+      formType,
     };
-  }, [formAction, formType, inputGroups])
-
+  }, [formAction, formType, inputGroups]);
 
   return (
     <FormContext.Provider value={value}>
-      <FormDataContextProvider action={inputConfig?.formAction} type={inputConfig?.formType}>
+      <FormDataContextProvider<TenantDataType | FormDataType>
+        data={{
+          type: inputConfig?.formType ?? FormType.Tenant,
+          action: inputConfig?.formAction ?? FormAction.Add,
+        }}
+      >
         {children}
-      </FormDataContextProvider>  
+      </FormDataContextProvider>
     </FormContext.Provider>
-  )
-}
+  );
+};
 
 export const useFormContextProvider = () => {
   const context = useContext(FormContext);

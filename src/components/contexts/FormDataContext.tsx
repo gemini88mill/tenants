@@ -29,10 +29,9 @@ type FormDataContextType = {
   saveDataContext: () => void;
 };
 
-type FormDataContextProviderProps = {
+type FormDataContextProviderProps<T> = {
   children: React.ReactNode;
-  action?: FormAction;
-  type?: FormType;
+  data: T;
 };
 
 const FormDataContext = createContext<FormDataContextType | undefined>(
@@ -48,11 +47,9 @@ FormDataContext.displayName = "FormDataContext";
  * form data context should be able to have all the functions to save a tenant.
  */
 
-export const FormDataContextProvider = ({
+export const FormDataContextProvider = <T, >({
   children,
-  action,
-  type
-}: FormDataContextProviderProps) => {
+}: FormDataContextProviderProps<T>) => {
   const { personal, clearPersonal, getPersonal, updatePersonal } = 
     usePersonal();
   const {
