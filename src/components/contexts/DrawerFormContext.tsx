@@ -28,17 +28,21 @@ type DrawerFormContextProviderProps<T, K> = {
 export const DrawerFormContextProvider = <T extends object, K extends keyof T>({ children }:DrawerFormContextProviderProps<T, K>) => {
   const [data, setData] = useState<T>({} as T);
 
-  const updateData = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key: string) => {
+  const updateProperty = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key: K) => {
     setData((prevData) => ({ ...prevData, [key]: e.target.value }));
   }, []);
 
-  const clearData = useCallback(() => {
-    setData({} as T);
-  }, []);
+  // const updateData = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key: string) => {
+  //   setData((prevData) => ({ ...prevData, [key]: e.target.value }));
+  // }, []);
 
-  const getData = useCallback(() => {
-    return data;
-  }, [data]);
+  // const clearData = useCallback(() => {
+  //   setData({} as T);
+  // }, []);
+
+  // const getData = useCallback(() => {
+  //   return data;
+  // }, [data]);
 
   const saveData = useCallback(() => {
     console.log("saveData");
@@ -47,7 +51,7 @@ export const DrawerFormContextProvider = <T extends object, K extends keyof T>({
   return (
     <DrawerFormContext.Provider value={{
       state: data,
-      actions: {updateData, clearData, getData, saveData},
+      actions: {updateProperty, saveData},
       constants: {}
     }}>
       {children}
