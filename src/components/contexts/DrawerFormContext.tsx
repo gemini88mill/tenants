@@ -21,7 +21,7 @@ type DrawerFormContextProviderProps<T> = {
 
 /**
  * todo: add K to denote any key inside T. This will be used to update the data in the context.
- * todo: provide a function that will set the configuration of the data within the drawer. 
+ * todo: limit context to only have specific data sets, for Tenants, owners, etc. 
  */
 
 export const DrawerFormContextProvider = <T extends object>({ children }:DrawerFormContextProviderProps<T>) => {
