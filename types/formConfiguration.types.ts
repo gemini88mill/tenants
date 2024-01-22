@@ -7,6 +7,7 @@ export enum FormType {
   Property = 'property',
   Schedule = 'schedule',
   Map = 'map',
+  None = 'none',
 }
 
 export enum FormAction {
@@ -25,12 +26,21 @@ export interface TenantFormConfiguration extends FormConfiguration {
   inputGroups: string[];
 }
 
-export interface FormDataType {
-  type: FormType;
+interface FormDataBase {
   action: FormAction;
 }
 
-export interface TenantDataType extends FormDataType {
+export interface FormDataType extends FormDataBase {
+  type: "none";
+}
+
+export interface TenantDataType extends FormDataBase {
   personal: typeof usePersonal;
   address: typeof useAddresses;
+  type: "tenant";
+}
+
+export interface TenantDrawerData {
+  type: "tenant";
+  data: TenantDataType;
 }

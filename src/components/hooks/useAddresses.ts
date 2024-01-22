@@ -1,6 +1,7 @@
+import { PostgrestError } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { getAddressTypes } from "../../clients/addressTypes";
-import { PostgrestError } from "@supabase/supabase-js";
+
 
 export type AddressInput = {
   streetAddress: string;

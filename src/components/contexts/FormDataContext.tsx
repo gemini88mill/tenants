@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useMemo } from "react";
 import { addTenant } from "../../clients/tenant";
 import { AddressInput, useAddresses } from "../hooks/useAddresses";
 import { PersonalInput, usePersonal } from "../hooks/usePersonal";
-import { FormAction, FormType } from "../../../types/formConfiguration.types";
+import { FormAction, FormDataType, FormType, TenantDataType } from "../../../types/formConfiguration.types";
 
 type FormDataContextType = {
   personal: {
@@ -47,9 +47,23 @@ FormDataContext.displayName = "FormDataContext";
  * form data context should be able to have all the functions to save a tenant.
  */
 
-export const FormDataContextProvider = <T, >({
+export const FormDataContextProvider = <T extends FormDataType | TenantDataType>({
   children,
+  data
 }: FormDataContextProviderProps<T>) => {
+  // if(data.type === FormType.Tenant) {
+  //   const { clearPersonal, getPersonal, updatePersonal } = data.personal();
+
+  //   return {
+  //     state: getPersonal(),
+  //     actions: {
+  //       clear: clearPersonal,
+  //       update: updatePersonal,
+  //       save: addTenant
+  //     }
+  //   }
+  // }
+
   const { personal, clearPersonal, getPersonal, updatePersonal } = 
     usePersonal();
   const {

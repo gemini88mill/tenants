@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 
+
 const initialPersonal = {
   firstName: "",
   middleName: "",
@@ -9,7 +10,7 @@ const initialPersonal = {
   phone: "",
 };
 
-export type PersonalInput = {
+export type PersonalInputData = {
   firstName: string;
   middleName: string;
   lastName: string;
@@ -19,7 +20,7 @@ export type PersonalInput = {
 };
 
 export const usePersonal = () => {
-  const [personal, setPersonal] = useState<PersonalInput>(initialPersonal);
+  const [personal, setPersonal] = useState<PersonalInputData>(initialPersonal);
 
   const updatePersonal = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key:string) => {
     setPersonal((prev) => ({...prev, [key]: e.target.value}));

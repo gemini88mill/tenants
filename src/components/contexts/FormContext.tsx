@@ -9,6 +9,8 @@ import {
 import { AddressInput } from "../molecules/InputGroups/AddressInput";
 import { PersonalInput } from "../molecules/InputGroups/PersonalInput";
 import { FormDataContextProvider } from "./FormDataContext";
+import { useAddresses } from "../hooks/useAddresses";
+import { usePersonal } from "../hooks/usePersonal";
 
 type FormContextProviderProps = {
   children: React.ReactNode;
@@ -68,8 +70,10 @@ export const FormContextProvider = ({
     <FormContext.Provider value={value}>
       <FormDataContextProvider<TenantDataType | FormDataType>
         data={{
-          type: inputConfig?.formType ?? FormType.Tenant,
+          type: "tenant",
           action: inputConfig?.formAction ?? FormAction.Add,
+          address: useAddresses,
+          personal: usePersonal,
         }}
       >
         {children}
