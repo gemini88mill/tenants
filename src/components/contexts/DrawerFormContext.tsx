@@ -4,12 +4,11 @@ import { FormAction, FormType } from "../../../types/formConfiguration.types";
 const DrawerFormContext = createContext({});
 DrawerFormContext.displayName = "DrawerFormContext";
 
-type DrawerFormContextProviderProps<T, K> = {
+type DrawerFormContextProviderProps<T> = {
   children: React.ReactNode;
   formAction: FormAction;
   formType: FormType;
   data: T;
-  property: K;
 };
 
 /**
@@ -25,24 +24,20 @@ type DrawerFormContextProviderProps<T, K> = {
  * todo: provide a function that will set the configuration of the data within the drawer. 
  */
 
-export const DrawerFormContextProvider = <T extends object, K extends keyof T>({ children }:DrawerFormContextProviderProps<T, K>) => {
+export const DrawerFormContextProvider = <T extends object>({ children }:DrawerFormContextProviderProps<T>) => {
   const [data, setData] = useState<T>({} as T);
 
-  const updateProperty = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key: K) => {
+  const updateData = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key: string) => {
     setData((prevData) => ({ ...prevData, [key]: e.target.value }));
   }, []);
 
-  // const updateData = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key: string) => {
-  //   setData((prevData) => ({ ...prevData, [key]: e.target.value }));
-  // }, []);
+  const clearData = useCallback(() => {
+    setData({} as T);
+  }, []);
 
-  // const clearData = useCallback(() => {
-  //   setData({} as T);
-  // }, []);
-
-  // const getData = useCallback(() => {
-  //   return data;
-  // }, [data]);
+  const getData = useCallback(() => {
+    return data;
+  }, [data]);
 
   const saveData = useCallback(() => {
     console.log("saveData");
@@ -51,7 +46,7 @@ export const DrawerFormContextProvider = <T extends object, K extends keyof T>({
   return (
     <DrawerFormContext.Provider value={{
       state: data,
-      actions: {updateProperty, saveData},
+      actions: {updateData, clearData, getData, saveData},
       constants: {}
     }}>
       {children}
