@@ -4,11 +4,12 @@ import { FormAction, FormType } from "../../../types/formConfiguration.types";
 const DrawerFormContext = createContext({});
 DrawerFormContext.displayName = "DrawerFormContext";
 
-type DrawerFormContextProviderProps<T> = {
+type DrawerFormContextProviderProps<T, K> = {
   children: React.ReactNode;
   formAction: FormAction;
   formType: FormType;
   data: T;
+  property: K;
 };
 
 /**
@@ -19,7 +20,12 @@ type DrawerFormContextProviderProps<T> = {
  * 
  */
 
-export const DrawerFormContextProvider = <T, >({ children }:DrawerFormContextProviderProps<T>) => {
+/**
+ * todo: add K to denote any key inside T. This will be used to update the data in the context.
+ * todo: provide a function that will set the configuration of the data within the drawer. 
+ */
+
+export const DrawerFormContextProvider = <T extends object, K extends keyof T>({ children }:DrawerFormContextProviderProps<T, K>) => {
   const [data, setData] = useState<T>({} as T);
 
   const updateData = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key: string) => {
