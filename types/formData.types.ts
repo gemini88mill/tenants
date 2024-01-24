@@ -21,7 +21,7 @@ export interface FormData {
 
 export interface TenantFormData extends FormData {
   type: "tenant";
-  data: {
+  data?: {
     personal: Personal;
     address: {
       street: string;
@@ -48,4 +48,4 @@ export interface OwnerFormData extends FormData {
       zip: string;
     }[];
   };
-};
+}

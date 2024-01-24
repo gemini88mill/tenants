@@ -42,7 +42,5 @@ export interface TenantDataType extends FormDataBase {
 
 export interface TenantDrawerData {
   type: "tenant";
-  data: {
-    personal: {}
-  };
+
 }

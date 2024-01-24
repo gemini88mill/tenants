@@ -106,7 +106,7 @@ export const Dashboard = () => {
       {/* <FormContextProvider inputConfig={inputConfig}>
         <SideInputDrawer open={open} setOpen={setOpen} />
       </FormContextProvider> */}
-      <DrawerFormContextProvider<TenantFormData> data={{
+      <DrawerFormContextProvider<TenantFormData> formData={{
         type: "tenant",
         action: "add"
       }} >

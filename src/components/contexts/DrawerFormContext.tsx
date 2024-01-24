@@ -3,7 +3,7 @@ import { FormData } from "../../../types/formData.types";
 
 type DrawerFormContextProviderProps<T> = {
   children: React.ReactNode;
-  data: T;
+  formData: T;
 };
 
 type DrawerFormContextValue<T> = {
@@ -33,9 +33,9 @@ DrawerFormContext.displayName = "DrawerFormContext";
 
 export const DrawerFormContextProvider = <T extends FormData>({
   children,
-  data: initData,
+  formData
 }: DrawerFormContextProviderProps<T>) => {
-  const [data, setData] = useState<T>(initData);
+  const [data, setData] = useState<T>(formData);
 
   const updateData = useCallback(
     (
