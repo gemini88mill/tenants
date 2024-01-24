@@ -1,6 +1,5 @@
 import { Box, Button, ButtonGroup, Drawer } from "@mui/material";
-import { useFormContextProvider } from "../../contexts/FormContext";
-import { useFormDataContextProvider } from "../../contexts/FormDataContext";
+import { useDrawerFormContextProvider } from "../../contexts/DrawerFormContext";
 
 type SideInputDrawerProps = {
   open: boolean;
@@ -12,8 +11,7 @@ type SideInputDrawerProps = {
  * contain the type of Form that needs to be generated and the data that needs to be filled in.
  */
 export const SideInputDrawer = ({ open, setOpen }: SideInputDrawerProps) => {
-  const { inputGroups } = useFormContextProvider();
-  const {saveDataContext} = useFormDataContextProvider();
+  const {state} = useDrawerFormContextProvider();
 
   return (
     <Drawer
@@ -22,17 +20,17 @@ export const SideInputDrawer = ({ open, setOpen }: SideInputDrawerProps) => {
       open={open}
       onClose={() => setOpen(false)}
     >
-      <Box width={1}>
+      {/* <Box width={1}>
         {inputGroups.map((InputGroup, index) => {
           return <InputGroup key={index} />;
         })}
-      </Box>
+      </Box> */}
       <Box width={1} paddingTop={2} display={"flex"} justifyContent={"flex-end"}>
         <ButtonGroup
           variant="contained"
           aria-label="outlined primary button group"
         >
-          <Button onClick={saveDataContext}>Submit</Button>
+          {/* <Button onClick={saveDataContext}>Submit</Button> */}
           <Button>Clear</Button>
         </ButtonGroup>
       </Box>

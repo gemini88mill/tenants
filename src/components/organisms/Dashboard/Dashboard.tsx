@@ -5,6 +5,7 @@ import {
 } from "@mui/icons-material";
 import {
   Box,
+  Drawer,
   Grid,
   IconButton,
   Stack
@@ -15,6 +16,9 @@ import { FormContextProvider } from "../../contexts/FormContext";
 import { NavMenu } from "../../molecules/NavMenu";
 import { TenantGrid } from "../../molecules/TenantGrid/TenantGrid";
 import { SideInputDrawer } from "../Drawer/SideInputDrawer";
+import { DrawerFormContextProvider } from "../../contexts/DrawerFormContext";
+import { Tenant } from "../../../clients/tenant";
+import { TenantFormData } from "../../../../types/formData.types";
 
 export enum MenuItems {
   Tenants = "Tenants",
@@ -99,9 +103,15 @@ export const Dashboard = () => {
           Content Footer
         </Grid>
       </Grid>
-      <FormContextProvider inputConfig={inputConfig}>
+      {/* <FormContextProvider inputConfig={inputConfig}>
         <SideInputDrawer open={open} setOpen={setOpen} />
-      </FormContextProvider>
+      </FormContextProvider> */}
+      <DrawerFormContextProvider<TenantFormData> data={{
+        type: "tenant",
+        action: "add"
+      }} >
+        <SideInputDrawer open={open} setOpen={setOpen} />
+      </DrawerFormContextProvider>
     </Box>
   );
 };

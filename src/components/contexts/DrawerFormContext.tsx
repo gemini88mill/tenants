@@ -1,35 +1,51 @@
 import { createContext, useCallback, useContext, useState } from "react";
-import { FormAction, FormType } from "../../../types/formConfiguration.types";
-
-const DrawerFormContext = createContext({});
-DrawerFormContext.displayName = "DrawerFormContext";
+import { FormData } from "../../../types/formData.types";
 
 type DrawerFormContextProviderProps<T> = {
   children: React.ReactNode;
-  formAction: FormAction;
-  formType: FormType;
   data: T;
 };
 
+type DrawerFormContextValue<T> = {
+  state: T;
+  actions: {
+    updateData: (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      key: string
+    ) => void;
+    clearData: () => void;
+    getData: () => T;
+    saveData: () => void;
+  };
+  constants: object;
+};
+
+const DrawerFormContext = createContext<DrawerFormContextValue<FormData> | undefined>(undefined);
+DrawerFormContext.displayName = "DrawerFormContext";
+
 /**
- * Type examples: 
+ * Type examples:
  * Tenant Type: Personal, Address, Contact, Emergency Contact, Vehicle, Pet, Lease, Payment, Note
  * Owner Type: Personal, Address, Contact
  * Property Type: Address, Contact, Note
- * 
+ *
  */
 
-/**
- * todo: add K to denote any key inside T. This will be used to update the data in the context.
- * todo: limit context to only have specific data sets, for Tenants, owners, etc. 
- */
+export const DrawerFormContextProvider = <T extends FormData>({
+  children,
+  data: initData,
+}: DrawerFormContextProviderProps<T>) => {
+  const [data, setData] = useState<T>(initData);
 
-export const DrawerFormContextProvider = <T extends object>({ children }:DrawerFormContextProviderProps<T>) => {
-  const [data, setData] = useState<T>({} as T);
-
-  const updateData = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key: string) => {
-    setData((prevData) => ({ ...prevData, [key]: e.target.value }));
-  }, []);
+  const updateData = useCallback(
+    (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      key: string
+    ) => {
+      setData((prevData) => ({ ...prevData, [key]: e.target.value }));
+    },
+    []
+  );
 
   const clearData = useCallback(() => {
     setData({} as T);
@@ -44,11 +60,13 @@ export const DrawerFormContextProvider = <T extends object>({ children }:DrawerF
   }, []);
 
   return (
-    <DrawerFormContext.Provider value={{
-      state: data,
-      actions: {updateData, clearData, getData, saveData},
-      constants: {}
-    }}>
+    <DrawerFormContext.Provider
+      value={{
+        state: data,
+        actions: { updateData, clearData, getData, saveData },
+        constants: {},
+      }}
+    >
       {children}
     </DrawerFormContext.Provider>
   );
