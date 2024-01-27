@@ -1,24 +1,16 @@
-import {
-  Email,
-  NotificationAdd,
-  PersonAdd
-} from "@mui/icons-material";
-import {
-  Box,
-  Drawer,
-  Grid,
-  IconButton,
-  Stack
-} from "@mui/material";
+import { Email, NotificationAdd, PersonAdd } from "@mui/icons-material";
+import { Box, Grid, IconButton, Stack } from "@mui/material";
 import { useState } from "react";
-import { FormAction, FormConfiguration, FormType } from "../../../../types/formConfiguration.types";
-import { FormContextProvider } from "../../contexts/FormContext";
+import {
+  FormAction,
+  FormConfiguration,
+  FormType,
+} from "../../../../types/formConfiguration.types";
+import { TenantFormData } from "../../../../types/formData.types";
 import { NavMenu } from "../../molecules/NavMenu";
 import { TenantGrid } from "../../molecules/TenantGrid/TenantGrid";
 import { SideInputDrawer } from "../Drawer/SideInputDrawer";
-import { DrawerFormContextProvider } from "../../contexts/DrawerFormContext";
-import { Tenant } from "../../../clients/tenant";
-import { TenantFormData } from "../../../../types/formData.types";
+import { DashboardHeader } from "./DashboardHeader";
 
 export enum MenuItems {
   Tenants = "Tenants",
@@ -35,7 +27,7 @@ export const Dashboard = () => {
 
   const createNewTenant = () => {
     setOpen(true);
-    const inputConfig:FormConfiguration = {
+    const inputConfig: FormConfiguration = {
       formAction: FormAction.Add,
       formType: FormType.Tenant,
     };
@@ -43,7 +35,7 @@ export const Dashboard = () => {
   };
 
   const onNavClick = (item: FormType) => {
-    const inputConfig:FormConfiguration = {
+    const inputConfig: FormConfiguration = {
       formAction: FormAction.Add,
       formType: item,
     };
@@ -53,7 +45,7 @@ export const Dashboard = () => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <NavMenu selected={selected} onNavClick={onNavClick}/>
+      <NavMenu selected={selected} onNavClick={onNavClick} />
       <Grid
         container
         direction={"column"}
@@ -64,38 +56,7 @@ export const Dashboard = () => {
           padding: 0,
         }}
       >
-        <Grid container sx={{ padding: 0, flex: "0 1 10vh" }}>
-          <Grid item xs={3}>
-            <h3>{selected}</h3>
-          </Grid>
-          <Grid item xs={9}>
-            <Stack
-              direction="row"
-              spacing={2}
-              justifyContent={"center"}
-              alignItems={"center"}
-            >
-              <IconButton aria-label="Email all tenants">
-                <Email color="info" />
-              </IconButton>
-              <IconButton aria-label="Notify">
-                <NotificationAdd color="info" />
-              </IconButton>
-              <IconButton
-                aria-label="Add New Tenant"
-                onClick={() => createNewTenant()}
-              >
-                <PersonAdd color="info" />
-              </IconButton>
-            </Stack>
-          </Grid>
-          <Grid item xs={6}>
-            Selected Tenant
-          </Grid>
-          <Grid item xs={6}>
-            Actions to Selected Tenant
-          </Grid>
-        </Grid>
+        <DashboardHeader selected={selected} createNewTenant={createNewTenant} />
         <Grid container sx={{ flex: "0 1 85vh", width: 1 }}>
           <TenantGrid />
         </Grid>
@@ -103,15 +64,9 @@ export const Dashboard = () => {
           Content Footer
         </Grid>
       </Grid>
-      {/* <FormContextProvider inputConfig={inputConfig}>
-        <SideInputDrawer open={open} setOpen={setOpen} />
-      </FormContextProvider> */}
-      <DrawerFormContextProvider<TenantFormData> formData={{
-        type: "tenant",
-        action: "add"
-      }} >
-        <SideInputDrawer open={open} setOpen={setOpen} />
-      </DrawerFormContextProvider>
+      <SideInputDrawer open={open} setOpen={setOpen} />
     </Box>
   );
 };
+
+

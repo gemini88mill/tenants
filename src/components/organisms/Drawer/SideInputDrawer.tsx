@@ -11,7 +11,6 @@ type SideInputDrawerProps = {
  * contain the type of Form that needs to be generated and the data that needs to be filled in.
  */
 export const SideInputDrawer = ({ open, setOpen }: SideInputDrawerProps) => {
-  const {state} = useDrawerFormContextProvider();
 
   return (
     <Drawer

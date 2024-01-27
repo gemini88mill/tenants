@@ -12,7 +12,19 @@ const TenantItem = ({ tenant }: { tenant: Tenant }) => {
   };
 
   return (
-    <Box sx={{width: 1}}>
+    <Box sx={{
+      width: 1,
+      ":hover": {
+        backgroundColor: "#3f3f3f",
+        cursor: "pointer",
+        "& h2": {
+          color: "#ffffff",
+        },
+        "& p": {
+          color: "#ffffff",
+        },
+      }
+      }}>
       <Grid container spacing={2} alignItems={"baseline"} maxWidth={1}>
         <Grid item xs={7} textAlign={"start"}>
           <small>Name</small>
