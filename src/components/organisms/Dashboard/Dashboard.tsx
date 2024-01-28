@@ -1,15 +1,14 @@
-import { Email, NotificationAdd, PersonAdd } from "@mui/icons-material";
-import { Box, Grid, IconButton, Stack } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useState } from "react";
 import {
   FormAction,
   FormConfiguration,
   FormType,
 } from "../../../../types/formConfiguration.types";
-import { TenantFormData } from "../../../../types/formData.types";
 import { NavMenu } from "../../molecules/NavMenu";
-import { TenantGrid } from "../../molecules/TenantGrid/TenantGrid";
 import { SideInputDrawer } from "../Drawer/SideInputDrawer";
+import { DashboardContent } from "./DashboardContent";
+import { DashboardFooter } from "./DashboardFooter";
 import { DashboardHeader } from "./DashboardHeader";
 
 export enum MenuItems {
@@ -57,12 +56,8 @@ export const Dashboard = () => {
         }}
       >
         <DashboardHeader selected={selected} createNewTenant={createNewTenant} />
-        <Grid container sx={{ flex: "0 1 85vh", width: 1 }}>
-          <TenantGrid />
-        </Grid>
-        <Grid container sx={{ padding: 0, flex: "0 1 5vh" }}>
-          Content Footer
-        </Grid>
+        <DashboardContent />
+        <DashboardFooter />
       </Grid>
       <SideInputDrawer open={open} setOpen={setOpen} />
     </Box>
