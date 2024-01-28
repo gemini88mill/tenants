@@ -56,7 +56,7 @@ export const Dashboard = () => {
         }}
       >
         <DashboardHeader selected={selected} createNewTenant={createNewTenant} />
-        <DashboardContent />
+        <DashboardContent selected={selected} />
         <DashboardFooter />
       </Grid>
       <SideInputDrawer open={open} setOpen={setOpen} />

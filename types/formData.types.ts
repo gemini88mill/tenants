@@ -1,3 +1,5 @@
+import { FormType } from "./formConfiguration.types";
+
 export interface Personal {
   firstName: string;
   lastName: string;
@@ -8,32 +10,31 @@ export interface Personal {
 }
 
 export interface Address {
-  street: string;
+  streetAddress: string;
+  streerAddress2: string;
   city: string;
-  state: string;
-  zip: string;
+  stateProvince: string;
+  country: string;
+  postalCode: string;
+  addressType: string;
 }
 
 export interface FormData {
-  type: string;
   action: "add" | "edit";
+  type: FormType;
+  data: object;
 }
 
 export interface TenantFormData extends FormData {
-  type: "tenant";
-  data?: {
+  type: FormType.Tenant;
+  data: {
     personal: Personal;
-    address: {
-      street: string;
-      city: string;
-      state: string;
-      zip: string;
-    }[];
+    address: Address[];
   };
 }
 
 export interface OwnerFormData extends FormData {
-  type: "owner";
+  type: FormType.Owner;
   data: {
     personal: {
       firstName: string;

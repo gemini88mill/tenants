@@ -1,17 +1,40 @@
-import { createContext, useContext } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
+import { FormData } from "../../../types/formData.types";
 
-const DrawerInputContext = createContext({});
-DrawerInputContext.displayName = "DrawerInputContext";
-
-type DrawerInputContextProviderProps = {
-  children: React.ReactNode;
-  formType: string;
-  formAction: string;
+type DrawerInputContextType<T> = {
+  state: T;
+  actions: {
+    updateItem: (item: Partial<T>) => void;
+  };
 };
 
-export const DrawerInputContextProvider = ({children, formAction, formType}: DrawerInputContextProviderProps) => {
+const DrawerInputContext = createContext<DrawerInputContextType<any> | undefined>(undefined);
+DrawerInputContext.displayName = "DrawerInputContext";
+
+type DrawerInputContextProviderProps<T> = {
+  children: React.ReactNode;
+  data: T;
+};
+
+export const DrawerInputContextProvider = <T extends FormData, > ({children, data}: DrawerInputContextProviderProps<T>) => {
+  const [state, setState] = useState<T>(data);
+
+  const updateItem = useCallback((item: Partial<T>) => {
+    setState((prevState) => {
+      return {
+        ...prevState,
+        ...item,
+      };
+    });
+  }, []);
+
   return (
-    <DrawerInputContext.Provider value={{}}>
+    <DrawerInputContext.Provider value={{
+      state,
+      actions: {
+        updateItem,
+      }
+    }}>
       {children}
     </DrawerInputContext.Provider>
   );

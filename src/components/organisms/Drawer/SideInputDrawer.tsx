@@ -1,5 +1,6 @@
 import { Box, Button, ButtonGroup, Drawer } from "@mui/material";
 import { useDrawerFormContextProvider } from "../../contexts/DrawerFormContext";
+import { useDrawerInputContext } from "../../contexts/DrawerInputContext";
 
 type SideInputDrawerProps = {
   open: boolean;
