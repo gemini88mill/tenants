@@ -1,9 +1,13 @@
+import { useAddresses } from "../src/components/hooks/useAddresses";
+import { usePersonal } from "../src/components/hooks/usePersonal";
+
 export enum FormType {
-  Tenant = 'tenant',
-  Owner = 'owner',
-  Property = 'property',
-  Schedule = 'schedule',
-  Map = 'map',
+  Tenant = 'Tenant',
+  Owner = 'Owner',
+  Property = 'Property',
+  Schedule = 'Schedule',
+  Map = 'Map',
+  None = 'None',
 }
 
 export enum FormAction {
@@ -20,5 +24,23 @@ export interface FormConfiguration {
 
 export interface TenantFormConfiguration extends FormConfiguration {
   inputGroups: string[];
-  
+}
+
+interface FormDataBase {
+  action: FormAction;
+}
+
+export interface FormDataType extends FormDataBase {
+  type: "none";
+}
+
+export interface TenantDataType extends FormDataBase {
+  personal: typeof usePersonal;
+  address: typeof useAddresses;
+  type: "tenant";
+}
+
+export interface TenantDrawerData {
+  type: "tenant";
+
 }

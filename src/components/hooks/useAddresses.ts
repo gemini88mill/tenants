@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { PostgrestError } from "@supabase/supabase-js";
+import { useEffect, useState } from "react";
+import { getAddressTypes } from "../../clients/addressTypes";
+
 
 export type AddressInput = {
   streetAddress: string;
@@ -22,6 +25,16 @@ const initialAddress = [{
 
 export const useAddresses = () => {
   const [addresses, setAddresses] = useState<AddressInput[]>(initialAddress);
+  const [addressTypes, setAddressTypes] = useState<Array<{id: number; address_type: string;}> | PostgrestError | null>(null);
+
+  const getAddressTypesAsync = async () => {
+    const response = await getAddressTypes();
+    setAddressTypes(response);
+  };
+
+  useEffect(() => {
+    getAddressTypesAsync();
+  }, []);
 
   const addAddress = () => {
     setAddresses((prev) => [...prev, {
@@ -63,5 +76,5 @@ export const useAddresses = () => {
     return addresses[index];
   };
 
-  return { addAddress, updateAddress, removeAddress, clearAddresses, getAddresses, getAddress };
+  return { addAddress, updateAddress, removeAddress, clearAddresses, getAddresses, getAddress, addressTypes };
 };

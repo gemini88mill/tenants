@@ -1,32 +1,17 @@
+import { Box, Grid } from "@mui/material";
+import { useState } from "react";
 import {
-  CalendarToday,
-  Email,
-  Home,
-  Map,
-  NotificationAdd,
-  People,
-  Person,
-  PersonAdd,
-} from "@mui/icons-material";
-import {
-  Box,
-  Drawer,
-  Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Stack,
-  SvgIconTypeMap,
-} from "@mui/material";
-import { OverridableComponent } from "@mui/material/OverridableComponent";
-import React, { useState } from "react";
-import { FormAction, FormConfiguration, FormType } from "../../../../types/formConfiguration.types";
-import { FormContextProvider } from "../../contexts/FormContext";
-import { TenantGrid } from "../../molecules/TenantGrid/TenantGrid";
+  FormAction,
+  FormConfiguration,
+  FormType,
+} from "../../../../types/formConfiguration.types";
+import { NavMenu } from "../../molecules/NavMenu";
 import { SideInputDrawer } from "../Drawer/SideInputDrawer";
+import { DashboardContent } from "./DashboardContent";
+import { DashboardFooter } from "./DashboardFooter";
+import { DashboardHeader } from "./DashboardHeader";
+import { DrawerInputContextProvider } from "../../contexts/DrawerInputContext";
+import { TenantFormData } from "../../../../types/formData.types";
 
 export enum MenuItems {
   Tenants = "Tenants",
@@ -36,129 +21,80 @@ export enum MenuItems {
   Maps = "Maps",
 }
 
-type MenuItemProps = {
-  text: MenuItems;
-  Icon: OverridableComponent<SvgIconTypeMap<unknown, "svg">> & {
-    muiName: string;
-  };
-  setSelected: React.Dispatch<React.SetStateAction<MenuItems>>;
-};
-
-const MenuItem = ({ text, Icon, setSelected }: MenuItemProps) => {
-  return (
-    <ListItem>
-      <ListItemButton onClick={() => setSelected(text)}>
-        <ListItemIcon>
-          <Icon />
-        </ListItemIcon>
-        <ListItemText primary={text} />
-      </ListItemButton>
-    </ListItem>
-  );
-};
-
 export const Dashboard = () => {
-  const [selected, setSelected] = useState<MenuItems>(MenuItems.Tenants);
+  const [selected, setSelected] = useState<FormType>(FormType.Tenant);
   const [open, setOpen] = useState(false);
   const [inputConfig, setInputConfig] = useState<FormConfiguration>();
 
   const createNewTenant = () => {
     setOpen(true);
-    const inputConfig:FormConfiguration = {
+    const inputConfig: FormConfiguration = {
       formAction: FormAction.Add,
       formType: FormType.Tenant,
     };
     setInputConfig(inputConfig);
   };
 
+  const onNavClick = (item: FormType) => {
+    const inputConfig: FormConfiguration = {
+      formAction: FormAction.Add,
+      formType: item,
+    };
+    setInputConfig(inputConfig);
+    setSelected(item);
+  };
+
+  //todo: move generic on DrawerInputContextProvider to data type prop. 
+
   return (
     <Box sx={{ display: "flex" }}>
-      <Drawer
-        variant="permanent"
-        anchor="left"
-        sx={{ width: 240 }}
-        PaperProps={{ sx: { width: 240 } }}
-      >
-        <List>
-          <MenuItem
-            text={MenuItems.Tenants}
-            Icon={Person}
-            setSelected={setSelected}
-          />
-          <MenuItem
-            text={MenuItems.Owners}
-            Icon={People}
-            setSelected={setSelected}
-          />
-          <MenuItem
-            text={MenuItems.Properties}
-            Icon={Home}
-            setSelected={setSelected}
-          />
-          <MenuItem
-            text={MenuItems.Schedule}
-            Icon={CalendarToday}
-            setSelected={setSelected}
-          />
-          <MenuItem
-            text={MenuItems.Maps}
-            Icon={Map}
-            setSelected={setSelected}
-          />
-        </List>
-      </Drawer>
-      <Grid
-        container
-        direction={"column"}
-        sx={{
-          display: "flex",
-          minWidth: "calc(100vw - 240px)",
-          height: "100vh",
-          padding: 0,
+      <NavMenu selected={selected} onNavClick={onNavClick} />
+      <DrawerInputContextProvider<TenantFormData>
+        data={{
+          action: FormAction.Add,
+          type: FormType.Tenant,
+          data: {
+            address: [
+              {
+                streetAddress: "",
+                streerAddress2: "",
+                city: "",
+                stateProvince: "",
+                postalCode: "",
+                country: "",
+                addressType: "",
+              },
+            ],
+            personal: {
+              firstName: "",
+              lastName: "",
+              email: "",
+              phone: "",
+              birthDate: new Date(),
+              occupation: "",
+            },
+          },
         }}
       >
-        <Grid container sx={{ padding: 0, flex: "0 1 10vh" }}>
-          <Grid item xs={3}>
-            <h3>{selected}</h3>
-          </Grid>
-          <Grid item xs={9}>
-            <Stack
-              direction="row"
-              spacing={2}
-              justifyContent={"center"}
-              alignItems={"center"}
-            >
-              <IconButton aria-label="Email all tenants">
-                <Email color="info" />
-              </IconButton>
-              <IconButton aria-label="Notify">
-                <NotificationAdd color="info" />
-              </IconButton>
-              <IconButton
-                aria-label="Add New Tenant"
-                onClick={() => createNewTenant()}
-              >
-                <PersonAdd color="info" />
-              </IconButton>
-            </Stack>
-          </Grid>
-          <Grid item xs={6}>
-            Selected Tenant
-          </Grid>
-          <Grid item xs={6}>
-            Actions to Selected Tenant
-          </Grid>
+        <Grid
+          container
+          direction={"column"}
+          sx={{
+            display: "flex",
+            minWidth: "calc(100vw - 240px)",
+            height: "100vh",
+            padding: 0,
+          }}
+        >
+          <DashboardHeader
+            selected={selected}
+            createNewTenant={createNewTenant}
+          />
+          <DashboardContent selected={selected} />
+          <DashboardFooter />
         </Grid>
-        <Grid container sx={{ flex: "0 1 85vh", width: 1 }}>
-          <TenantGrid />
-        </Grid>
-        <Grid container sx={{ padding: 0, flex: "0 1 5vh" }}>
-          Content Footer
-        </Grid>
-      </Grid>
-      <FormContextProvider inputConfig={inputConfig}>
         <SideInputDrawer open={open} setOpen={setOpen} />
-      </FormContextProvider>
+      </DrawerInputContextProvider>
     </Box>
   );
 };
