@@ -10,6 +10,8 @@ import { SideInputDrawer } from "../Drawer/SideInputDrawer";
 import { DashboardContent } from "./DashboardContent";
 import { DashboardFooter } from "./DashboardFooter";
 import { DashboardHeader } from "./DashboardHeader";
+import { DrawerInputContextProvider } from "../../contexts/DrawerInputContext";
+import { TenantFormData } from "../../../../types/formData.types";
 
 export enum MenuItems {
   Tenants = "Tenants",
@@ -42,26 +44,57 @@ export const Dashboard = () => {
     setSelected(item);
   };
 
+  //todo: move generic on DrawerInputContextProvider to data type prop. 
+
   return (
     <Box sx={{ display: "flex" }}>
       <NavMenu selected={selected} onNavClick={onNavClick} />
-      <Grid
-        container
-        direction={"column"}
-        sx={{
-          display: "flex",
-          minWidth: "calc(100vw - 240px)",
-          height: "100vh",
-          padding: 0,
+      <DrawerInputContextProvider<TenantFormData>
+        data={{
+          action: FormAction.Add,
+          type: FormType.Tenant,
+          data: {
+            address: [
+              {
+                streetAddress: "",
+                streerAddress2: "",
+                city: "",
+                stateProvince: "",
+                postalCode: "",
+                country: "",
+                addressType: "",
+              },
+            ],
+            personal: {
+              firstName: "",
+              lastName: "",
+              email: "",
+              phone: "",
+              birthDate: new Date(),
+              occupation: "",
+            },
+          },
         }}
       >
-        <DashboardHeader selected={selected} createNewTenant={createNewTenant} />
-        <DashboardContent selected={selected} />
-        <DashboardFooter />
-      </Grid>
-      <SideInputDrawer open={open} setOpen={setOpen} />
+        <Grid
+          container
+          direction={"column"}
+          sx={{
+            display: "flex",
+            minWidth: "calc(100vw - 240px)",
+            height: "100vh",
+            padding: 0,
+          }}
+        >
+          <DashboardHeader
+            selected={selected}
+            createNewTenant={createNewTenant}
+          />
+          <DashboardContent selected={selected} />
+          <DashboardFooter />
+        </Grid>
+        <SideInputDrawer open={open} setOpen={setOpen} />
+      </DrawerInputContextProvider>
     </Box>
   );
 };
-
-

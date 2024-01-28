@@ -14,35 +14,8 @@ export const DashboardContent = ({selected}: DashboardContentProps) => {
   switch (selected) {
     case FormType.Tenant:
       return (
-        <Grid container sx={{ flex: "0 1 85vh", width: 1 }}>
-          <DrawerInputContextProvider<TenantFormData>  
-            data={{
-              action: FormAction.Add,
-              type: FormType.Tenant,
-              data: {
-                address: [
-                  {
-                    streetAddress: "",
-                    streerAddress2: "",
-                    city: "",
-                    stateProvince: "",
-                    postalCode: "",
-                    country: "",
-                    addressType: "",
-                  },
-                ],
-                personal: {
-                  firstName: "",
-                  lastName: "",
-                  email: "",
-                  phone: "",
-                  birthDate: new Date(),
-                  occupation: "",
-                },
-              }
-            }}>
-            <TenantGrid />
-          </DrawerInputContextProvider>
+        <Grid container sx={{ flex: "0 1 85vh", width: 1 }}>          
+          <TenantGrid />
         </Grid>
       );
     case FormType.Owner:
