@@ -13,7 +13,7 @@ type SideInputDrawerProps = {
 export const SideInputDrawer = ({ open, setOpen }: SideInputDrawerProps) => {
   const {state: {data}} = useDrawerInputContext();
 
-  const fields = Object.keys(data);
+  // todo: refactor inputs to conform to data coming in. Address should conform to address type, etc.
 
   return (
     <Drawer
@@ -23,7 +23,7 @@ export const SideInputDrawer = ({ open, setOpen }: SideInputDrawerProps) => {
       onClose={() => setOpen(false)}
     >
       {
-        fields.map((field) => {
+        Object.keys(data).map((field) => {
           if (field === "profiles" || field === "addresses"){
             return (
               <Box key={field} width={1} paddingBottom={2}>
