@@ -5,6 +5,7 @@ type DrawerInputContextType<T> = {
   state: T;
   actions: {
     updateItem: (item: Partial<T>) => void;
+    setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   };
 };
 
@@ -13,10 +14,11 @@ DrawerInputContext.displayName = "DrawerInputContext";
 
 type DrawerInputContextProviderProps<T> = {
   children: React.ReactNode;
+  setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   data: T;
 };
 
-export const DrawerInputContextProvider = <T extends FormData, > ({children, data}: DrawerInputContextProviderProps<T>) => {
+export const DrawerInputContextProvider = <T extends FormData, > ({children, data, setOpen}: DrawerInputContextProviderProps<T>) => {
   const [state, setState] = useState<T>(data);
 
   const updateItem = useCallback((item: Partial<T>) => {
@@ -33,6 +35,7 @@ export const DrawerInputContextProvider = <T extends FormData, > ({children, dat
       state,
       actions: {
         updateItem,
+        setOpen
       }
     }}>
       {children}

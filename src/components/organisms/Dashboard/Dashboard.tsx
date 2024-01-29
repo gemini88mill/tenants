@@ -2,16 +2,15 @@ import { Box, Grid } from "@mui/material";
 import { useState } from "react";
 import {
   FormAction,
-  FormConfiguration,
-  FormType,
+  FormType
 } from "../../../../types/formConfiguration.types";
+import { TenantFormData } from "../../../../types/formData.types";
+import { DrawerInputContextProvider } from "../../contexts/DrawerInputContext";
 import { NavMenu } from "../../molecules/NavMenu";
 import { SideInputDrawer } from "../Drawer/SideInputDrawer";
 import { DashboardContent } from "./DashboardContent";
 import { DashboardFooter } from "./DashboardFooter";
 import { DashboardHeader } from "./DashboardHeader";
-import { DrawerInputContextProvider } from "../../contexts/DrawerInputContext";
-import { TenantFormData } from "../../../../types/formData.types";
 
 export enum MenuItems {
   Tenants = "Tenants",
@@ -21,26 +20,52 @@ export enum MenuItems {
   Maps = "Maps",
 }
 
+const dataInit:TenantFormData = {
+  action: FormAction.Add,
+  type: FormType.Tenant,
+  data: {
+    address: [
+      {
+        streetAddress: "",
+        streerAddress2: "",
+        city: "",
+        stateProvince: "",
+        postalCode: "",
+        country: "",
+        addressType: "",
+      },
+    ],
+    personal: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      birthDate: new Date(),
+      occupation: "",
+    },
+  }
+}
+
 export const Dashboard = () => {
   const [selected, setSelected] = useState<FormType>(FormType.Tenant);
   const [open, setOpen] = useState(false);
-  const [inputConfig, setInputConfig] = useState<FormConfiguration>();
+  // const [inputConfig, setInputConfig] = useState<FormConfiguration>();
 
   const createNewTenant = () => {
     setOpen(true);
-    const inputConfig: FormConfiguration = {
-      formAction: FormAction.Add,
-      formType: FormType.Tenant,
-    };
-    setInputConfig(inputConfig);
+    // const inputConfig: FormConfiguration = {
+    //   formAction: FormAction.Add,
+    //   formType: FormType.Tenant,
+    // };
+    // setInputConfig(inputConfig);
   };
 
   const onNavClick = (item: FormType) => {
-    const inputConfig: FormConfiguration = {
-      formAction: FormAction.Add,
-      formType: item,
-    };
-    setInputConfig(inputConfig);
+    // const inputConfig: FormConfiguration = {
+    //   formAction: FormAction.Add,
+    //   formType: item,
+    // };
+    // setInputConfig(inputConfig);
     setSelected(item);
   };
 
@@ -50,31 +75,8 @@ export const Dashboard = () => {
     <Box sx={{ display: "flex" }}>
       <NavMenu selected={selected} onNavClick={onNavClick} />
       <DrawerInputContextProvider<TenantFormData>
-        data={{
-          action: FormAction.Add,
-          type: FormType.Tenant,
-          data: {
-            address: [
-              {
-                streetAddress: "",
-                streerAddress2: "",
-                city: "",
-                stateProvince: "",
-                postalCode: "",
-                country: "",
-                addressType: "",
-              },
-            ],
-            personal: {
-              firstName: "",
-              lastName: "",
-              email: "",
-              phone: "",
-              birthDate: new Date(),
-              occupation: "",
-            },
-          },
-        }}
+        data={dataInit}
+        setOpen={setOpen}
       >
         <Grid
           container

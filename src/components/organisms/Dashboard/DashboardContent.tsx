@@ -1,9 +1,6 @@
 import { Grid } from "@mui/material";
-import { FormAction, FormType } from "../../../../types/formConfiguration.types";
-import { TenantFormData } from "../../../../types/formData.types";
-import { DrawerInputContextProvider } from "../../contexts/DrawerInputContext";
+import { FormType } from "../../../../types/formConfiguration.types";
 import { TenantGrid } from "../../molecules/TenantGrid/TenantGrid";
-import { SideInputDrawer } from "../Drawer/SideInputDrawer";
 
 type DashboardContentProps = {
   selected: FormType;
